@@ -2,7 +2,7 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 import { getEnvOrThrow } from '../../utils/env';
 import type { Daf } from '../../utils/endaoment-types';
 import './AllDafs.css';
-import { useReducer, useState } from 'react';
+import { useReducer, useEffect, useState } from 'react';
 import { DONATE_BOX_ID, DonateBox } from './DonateBox';
 import { GRANT_BOX_ID, GrantBox } from './GrantBox';
 import { getEndaomentUrls } from '../../utils/endaoment-urls';
