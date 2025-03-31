@@ -31,6 +31,30 @@ function saveOAuthState({ codeVerifier, codeChallenge, state }) {
     fs.writeFileSync(filePath, JSON.stringify({ codeVerifier, codeChallenge, state }, null, 2));
 }
 
+// Endpoint to initiate login
+app.post('/init-login', async (req, res) => {
+    const codeVerifier = generateCodeVerifier();
+    const codeChallenge = await generateCodeChallenge(codeVerifier);
+    const state = crypto.randomBytes(16).toString('hex');
+  
+    saveOAuthState({ codeVerifier, codeChallenge, state });
+  
+    const redirectUri = 'http://localhost:5454/verify-login';  // Ensure this matches your OAuth redirect URI
+    const urlParams = new URLSearchParams({
+      response_type: 'code',
+      prompt: 'consent',
+      scope: 'openid offline_access accounts transactions profile',
+      client_id: process.env.ENDAOMENT_CLIENT_ID,
+      redirect_uri: redirectUri,
+      code_challenge: codeChallenge,
+      code_challenge_method: 'S256',
+      state: state,
+    });
+  
+    const authUrl = `https://auth.endaoment.org/auth?${urlParams.toString()}`;
+    res.json({ url: authUrl });
+  });
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
