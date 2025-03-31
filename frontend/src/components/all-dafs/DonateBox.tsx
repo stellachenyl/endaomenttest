@@ -1,60 +1,28 @@
 import { useMutation } from '@tanstack/react-query';
 import type { Daf, WireInstructions } from '../../utils/endaoment-types';
 import { getEnvOrThrow } from '../../utils/env';
-import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { getEndaomentUrls } from '../../utils/endaoment-urls';
 import { queryClient } from '../../utils/queryClient';
 
 export const DONATE_BOX_ID = 'donate-box';
 
-// This will handle the fetch of wire instructions from the backend
-const fetchWireInstructions = async (dafId: string) => {
-  const response = await fetch(`${getEnvOrThrow('SAFE_BACKEND_URL')}/get-wire-instructions?fundId=${dafId}`);
-  const data = await response.json();
-  return data;
-};
-
 // Accept wireInstructions as a prop
 export const DonateBox = ({
   daf,
   onClose,
+  wireInstructions, // Add wireInstructions prop here
 }: {
   daf: Daf;
   onClose: () => void;
+  wireInstructions: WireInstructions | null; // Include wireInstructions in the type definition
 }) => {
-  const [wireInstructions, setWireInstructions] = useState<WireInstructions | null>(null);
-  const [loadingWireInstructions, setLoadingWireInstructions] = useState(true);
-  const [errorFetchingWireInstructions, setErrorFetchingWireInstructions] = useState(false);
-
-  // Fetch wire instructions when daf.id is available
-  useEffect(() => {
-    if (!daf.id) return;
-
-    const fetchData = async () => {
-      try {
-        setLoadingWireInstructions(true);
-        setErrorFetchingWireInstructions(false);
-
-        const data = await fetchWireInstructions(daf.id);
-        setWireInstructions(data);
-      } catch (error) {
-        setErrorFetchingWireInstructions(true);
-        console.error('Error fetching wire instructions', error);
-      } finally {
-        setLoadingWireInstructions(false);
-      }
-    };
-
-    fetchData();
-  }, [daf.id]); // Run the effect when `daf.id` changes
-
   const {
     mutate: donate,
     isIdle,
     isPending,
     isSuccess,
-    isError,
+    isError: donationError,
   } = useMutation({
     mutationKey: ['Donate'],
     mutationFn: async (formData: FormData) => {
@@ -103,9 +71,7 @@ export const DonateBox = ({
         </div>
 
         {/* Render wire instructions if available */}
-        {loadingWireInstructions && <p>Loading wire instructions...</p>}
-        {errorFetchingWireInstructions && <p>Failed to load wire instructions.</p>}
-        {wireInstructions && (
+        {wireInstructions ? (
           <div>
             <h5>Wire Instructions</h5>
             <p>
@@ -117,12 +83,14 @@ export const DonateBox = ({
               <b>{wireInstructions.receivingBank.abaRoutingNumber}</b>.
             </p>
           </div>
+        ) : (
+          <p>Loading wire instructions...</p>
         )}
 
-        {isIdle || isError ? (
+        {isIdle || donationError ? (
           <button type="submit">
             {isIdle && 'Donate'}
-            {isError && 'Error donating, try again'}
+            {donationError && 'Error donating, try again'}
           </button>
         ) : (
           <span>
