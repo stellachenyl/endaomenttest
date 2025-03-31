@@ -2,6 +2,8 @@ import type { Request, Response } from 'express';
 import { getAccessToken } from '../utils/access-token';
 import { getEndaomentUrls } from '../utils/endaoment-urls';
 
+let dafsInMemory: any[] = [];
+
 export const createDaf = async (req: Request, res: Response) => {
   console.log('Received DAF Creation Request:', req.body);
   const newFundName = req.body['name'];
