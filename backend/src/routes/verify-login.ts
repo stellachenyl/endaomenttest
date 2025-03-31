@@ -50,6 +50,8 @@ export const verifyLogin = async (req: Request, res: Response) => {
   });
   const tokenResponseJson = await tokenResponse.json();
 
+  console.log('Endaoment Token Response:', tokenResponseJson);
+
   res.cookie(ACCESS_TOKEN_NAME, tokenResponseJson, {
     maxAge: 24 * 60 * 60 * 1000,
     httpOnly: true,

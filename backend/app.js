@@ -46,6 +46,7 @@ function saveOAuthState({ codeVerifier, codeChallenge, state }) {
 
 // Endpoint to initiate login
 app.post('/init-login', async (req, res) => {
+  console.log('Received request to /init-login');
     const codeVerifier = generateCodeVerifier();
     const codeChallenge = await generateCodeChallenge(codeVerifier);
     const state = crypto.randomBytes(16).toString('hex');
