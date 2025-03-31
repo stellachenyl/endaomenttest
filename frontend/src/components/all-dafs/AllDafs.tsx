@@ -42,6 +42,7 @@ export const AllDafs = () => {
   );
   const [isShowingDonateBox, setIsShowingDonateBox] = useState(false);
   const [isShowingGrantBox, setIsShowingGrantBox] = useState(false);
+  const [wireInstructions, setWireInstructions] = useState(null);
 
   const handleDonate = (id: string) => {
     if (!focusedDaf || focusedDaf.id !== id || !isShowingDonateBox) {
