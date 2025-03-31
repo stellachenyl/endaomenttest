@@ -4,6 +4,7 @@ import { getEnvOrThrow } from '../../utils/env';
 import type { FormEvent } from 'react';
 import { getEndaomentUrls } from '../../utils/endaoment-urls';
 import { queryClient } from '../../utils/queryClient';
+import { useState } from 'react';
 
 export const DONATE_BOX_ID = 'donate-box';
 
