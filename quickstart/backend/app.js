@@ -14,6 +14,12 @@ function toUrlSafe(base64) {
     return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
 }
 
+// Generate code verifier and challenge
+function generateCodeVerifier() {
+    const randomBytes = crypto.randomBytes(32);
+    return toUrlSafe(randomBytes.toString('base64'));
+}
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
