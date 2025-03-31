@@ -108,8 +108,13 @@ export const DonateBox = ({
           </span>
         )}
 
-        {isSuccess && (
+        {isSuccess && donationPledgeId && (
           <>
+            <div>
+              <h1>Donation Successful!</h1>
+              <p>Your donation has been successfully processed.</p>
+              <p>Donation ID: {donationPledgeId}</p>
+            </div>
             <br />
             <a
               href={`${getEndaomentUrls().app}/funds/${daf.id}`}
