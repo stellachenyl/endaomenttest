@@ -2,6 +2,7 @@ import { useState, FormEvent } from 'react';
 import './NewDaf.css';
 import { useMutation } from '@tanstack/react-query';
 import { getEnvOrThrow } from '../../utils/env';
+import { convertCountryToCode } from '../../utils/countryUtils';
 
 export const NewDaf = () => {
   const [newDafData, setNewDafData] = useState<any>(null);
@@ -29,7 +30,9 @@ export const NewDaf = () => {
             city: rawFormObject['fundAdvisor.address.city'],
             state: rawFormObject['fundAdvisor.address.state'],
             zip: rawFormObject['fundAdvisor.address.zip'],
-            country: rawFormObject['fundAdvisor.address.country'],
+            country: typeof rawFormObject['fundAdvisor.address.country'] === 'string'
+              ? convertCountryToCode(rawFormObject['fundAdvisor.address.country'])
+              : rawFormObject['fundAdvisor.address.country'],
           },
         },
       };
