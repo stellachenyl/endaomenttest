@@ -80,6 +80,7 @@ export const AllDafs = () => {
     setIsShowingDonateBox(false);
     setIsShowingGrantBox(false);
     setFocusedDaf(undefined);
+    setWireInstructions(null);
   };
 
   return (
