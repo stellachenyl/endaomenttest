@@ -125,6 +125,11 @@ export const AllDafs = () => {
           ))}
         </ul>
       )}
+      {/* Wire Type Selector */}
+      <div>
+        <button onClick={() => handleWireTypeChange('domestic')}>Domestic</button>
+        <button onClick={() => handleWireTypeChange('international')}>International</button>
+      </div>
     </>
   );
 };
