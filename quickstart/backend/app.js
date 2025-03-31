@@ -9,7 +9,6 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use('/', routes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
