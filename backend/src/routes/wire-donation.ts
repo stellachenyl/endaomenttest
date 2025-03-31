@@ -7,15 +7,12 @@ import { getEndaomentUrls } from '../utils/endaoment-urls';
 export async function getWireInstructions(req: Request, res: Response) {
   // Get wire type from the query parameters (default to domestic)
   const wireType = req.query.type || 'domestic'; // Default to domestic if no type is provided
-
-  // Construct the correct URL based on wire type
   const wireInstructionsUrl = 
     wireType === 'international'
       ? `${getEndaomentUrls().api}/v1/donation-pledges/wire/details/international`
       : `${getEndaomentUrls().api}/v1/donation-pledges/wire/details/domestic`;
 
   try {
-    // Fetch wire instructions from Endaoment API
     const wireInstructionsResponse = await fetch(wireInstructionsUrl, {
       method: 'GET',
       headers: {
