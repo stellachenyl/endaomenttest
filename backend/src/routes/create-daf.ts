@@ -8,9 +8,8 @@ export const createDaf = async (req: Request, res: Response) => {
   const newFundAdvisor = req.body['fundAdvisor'];
 
   if (!newFundName || !newFundDescription || !newFundAdvisor) {
-    res.status(400);
-    res.end();
-    return;
+    console.log('Missing required fields');
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
   const token = getAccessToken(req);
