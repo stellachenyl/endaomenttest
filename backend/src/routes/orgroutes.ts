@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { searchOrgs } from '../controllers/org-controller'; // Import your controller function for searching
+import { searchOrgs } from '../controllers/orgcontroller'; // Import your controller function for searching
 
 const router = express.Router();
 

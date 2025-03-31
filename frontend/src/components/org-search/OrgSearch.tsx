@@ -3,16 +3,10 @@ import { useSearch } from '../../utils/useSearch';
 import { getEndaomentUrls } from '../../utils/endaoment-urls';
 
 export const OrgSearch = () => {
-  const {
-    searchTerm,
-    setSearchTerm,
-    submitSearch,
-    data,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useSearch();
+  const [searchTerm, setSearchTerm] = useState(''); // Manage search term state
+  const [searchResults, setSearchResults] = useState([]); // State to store the search results
+  const [isLoading, setIsLoading] = useState(false); // Loading state for the request
+  const [error, setError] = useState<string | null>(null); // Error handling state
 
   return (
     <>
