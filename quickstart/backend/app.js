@@ -10,6 +10,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+function toUrlSafe(base64) {
+    return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+}
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
