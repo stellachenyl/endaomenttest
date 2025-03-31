@@ -19,7 +19,7 @@ export const DonateBox = ({
   wireInstructions: WireInstructions | null; // Include wireInstructions in the type definition
 }) => {
   const [donationPledgeId, setDonationPledgeId] = useState<string | null>(null);
-  
+
   const {
     mutate: donate,
     isIdle,
@@ -44,7 +44,13 @@ export const DonateBox = ({
         }
       );
 
-      return response.json();
+      const result = await response.json();
+
+      if (result.id) {
+        setDonationPledgeId(result.id);
+      }
+
+      return result;
     },
     onSuccess: () => {
       queryClient.refetchQueries({
