@@ -14,6 +14,19 @@ function toUrlSafe(base64) {
     return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
 }
 
+function getOAuthState(stateFromUrl) {
+  // Load the exported variables from the file, session, or database
+  // The specific implementation will be up to your team and the requirements of your application
+  return JSON.parse(
+    // Remember that in the case of a state mismatch, this file will not exist
+    // You should handle this case by returning an error
+    fs.readFileSync(
+      path.join(__dirname, `${stateFromUrl}-exportedVariables.json`),
+      'utf8'
+    )
+  );
+}
+
 // Generate code verifier and challenge
 function generateCodeVerifier() {
     const randomBytes = crypto.randomBytes(32);
