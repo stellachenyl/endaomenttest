@@ -50,11 +50,11 @@ export const AllDafs = () => {
     }
   }, [focusedDaf]);
 
-  const fetchWireInstructions = async (dafId: string) => {
+  const fetchWireInstructions = async (dafId: string, wireType: string) => {
     try {
-      const response = await fetch(`/get-wire-instructions?fundId=${dafId}`);
+      const response = await fetch(`/get-wire-instructions?fundId=${dafId}&type=${wireType}`);
       const data = await response.json();
-      setWireInstructions(data);
+      setWireInstructions(data);  // Set wire instructions in state
     } catch (error) {
       console.error('Error fetching wire instructions:', error);
     }
