@@ -18,6 +18,8 @@ export const DonateBox = ({
   onClose: () => void;
   wireInstructions: WireInstructions | null; // Include wireInstructions in the type definition
 }) => {
+  const [donationPledgeId, setDonationPledgeId] = useState<string | null>(null);
+  
   const {
     mutate: donate,
     isIdle,
