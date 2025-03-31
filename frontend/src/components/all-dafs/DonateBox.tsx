@@ -103,7 +103,9 @@ export const DonateBox = ({
         </div>
 
         {/* Render wire instructions if available */}
-        {wireInstructions ? (
+        {loadingWireInstructions && <p>Loading wire instructions...</p>}
+        {errorFetchingWireInstructions && <p>Failed to load wire instructions.</p>}
+        {wireInstructions && (
           <div>
             <h5>Wire Instructions</h5>
             <p>
@@ -115,8 +117,6 @@ export const DonateBox = ({
               <b>{wireInstructions.receivingBank.abaRoutingNumber}</b>.
             </p>
           </div>
-        ) : (
-          <p>Loading wire instructions...</p>
         )}
 
         {isIdle || isError ? (
