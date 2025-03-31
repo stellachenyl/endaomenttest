@@ -3,6 +3,7 @@ import { getAccessToken } from '../utils/access-token';
 import { getEndaomentUrls } from '../utils/endaoment-urls';
 
 export const createDaf = async (req: Request, res: Response) => {
+  console.log('Received DAF Creation Request:', req.body);
   const newFundName = req.body['name'];
   const newFundDescription = req.body['description'];
   const newFundAdvisor = req.body['fundAdvisor'];
