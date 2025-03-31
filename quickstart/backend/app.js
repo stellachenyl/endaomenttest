@@ -55,6 +55,37 @@ app.post('/init-login', async (req, res) => {
     res.json({ url: authUrl });
   });
 
+// Endpoint to verify login and exchange code for token
+app.get('/verify-login', async (req, res) => {
+    const { state, code } = req.query;
+    const filePath = path.join(__dirname, 'oauth_state.json');
+    const { codeVerifier, redirectUri } = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  
+    if (state !== state) {
+      return res.status(400).send('State mismatch');
+    }
+  
+    const formData = new URLSearchParams({
+      grant_type: 'authorization_code',
+      code: code,
+      code_verifier: codeVerifier,
+      redirect_uri: redirectUri,
+    });
+  
+    const tokenResponse = await fetch('https://auth.endaoment.org/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(`${process.env.ENDAOMENT_CLIENT_ID}:${process.env.ENDAOMENT_CLIENT_SECRET}`).toString('base64')}`,
+      },
+      body: formData,
+    });
+  
+    const tokenData = await tokenResponse.json();
+    // Store the token securely
+    res.json(tokenData); // Send the token data back to the frontend (optional, you can also store it server-side)
+  });
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
