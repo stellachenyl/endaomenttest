@@ -46,7 +46,7 @@ function saveOAuthState({ codeVerifier, codeChallenge, state }) {
 
 // Endpoint to initiate login
 app.post('/init-login', async (req, res) => {
-  console.log('Received request to /init-login');
+    console.log('Received request to /init-login');
     const codeVerifier = generateCodeVerifier();
     const codeChallenge = await generateCodeChallenge(codeVerifier);
     const state = crypto.randomBytes(16).toString('hex');
@@ -96,6 +96,14 @@ app.get('/verify-login', async (req, res) => {
     });
   
     const tokenData = await tokenResponse.json();
+
+    // Store the token in a cookie
+    res.cookie('ndao_token', tokenData.access_token, {
+      httpOnly: true, // Makes the cookie accessible only through HTTP requests
+      secure: process.env.NODE_ENV === 'production', // Use 'secure' cookie in production (HTTPS)
+      maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
+    });
+    
     // Store the token securely
     res.json(tokenData); // Send the token data back to the frontend (optional, you can also store it server-side)
   });
