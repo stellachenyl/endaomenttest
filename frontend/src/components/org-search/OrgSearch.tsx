@@ -3,44 +3,16 @@ import { useSearch } from '../../utils/useSearch';
 import { getEndaomentUrls } from '../../utils/endaoment-urls';
 
 export const OrgSearch = () => {
-  const [searchTerm, setSearchTerm] = useState(''); // Manage search term state
-  const [searchResults, setSearchResults] = useState([]); // State to store the search results
-  const [isLoading, setIsLoading] = useState(false); // Loading state for the request
-  const [error, setError] = useState<string | null>(null); // Error handling state
-
-  // Handle search on button click or Enter key press
-  const handleSearch = async () => {
-    setIsLoading(true); // Set loading to true before the API call
-    setError(null); // Reset previous errors
-    try {
-      // Prepare the search URL for Endaoment API
-      const searchUrl = `https://api.endaoment.com/v2/orgs/search?searchTerm=${searchTerm}`;
-
-      // Make the fetch request
-      const response = await fetch(searchUrl);
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch organizations');
-      }
-
-      const data = await response.json();
-
-      // Set search results in the state
-      setSearchResults(data);
-    } catch (error) {
-      console.error(error);
-      setError('Error fetching search results'); // Set error message on failure
-    } finally {
-      setIsLoading(false); // Set loading to false after the request is done
-    }
-  };
-  
-  // Trigger search when user presses Enter or clicks the Search button
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
+  const {
+    searchTerm,
+    setSearchTerm,
+    submitSearch,
+    data,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useSearch();
 
   return (
     <>
