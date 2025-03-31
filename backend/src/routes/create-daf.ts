@@ -26,6 +26,7 @@ export const createDaf = async (req: Request, res: Response) => {
     name: newFundName,
     description: newFundDescription,
     advisor: newFundAdvisor,
+    usdcBalance: 0,
   };
 
   dafsInMemory.push(newDaf);
