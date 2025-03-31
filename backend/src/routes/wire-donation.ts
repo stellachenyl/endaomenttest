@@ -3,26 +3,36 @@ import { getAccessToken } from '../utils/access-token';
 import type { Request, Response } from 'express';
 import { getEndaomentUrls } from '../utils/endaoment-urls';
 
+// Function to get wire instructions
 export async function getWireInstructions(req: Request, res: Response) {
-  const wireInstructionsResponse = await fetch(
-    // For domestic wire instructions
-    `${getEndaomentUrls().api}/v1/donation-pledges/wire/details/domestic`,
-    // For international wire instructions
-    // `${getEndaomentUrls().api}/v1/donation-pledges/wire/details/international`,
-    {
+  // Get wire type from the query parameters (default to domestic)
+  const wireType = req.query.type || 'domestic'; // Default to domestic if no type is provided
+
+  // Construct the correct URL based on wire type
+  const wireInstructionsUrl = 
+    wireType === 'international'
+      ? `${getEndaomentUrls().api}/v1/donation-pledges/wire/details/international`
+      : `${getEndaomentUrls().api}/v1/donation-pledges/wire/details/domestic`;
+
+  try {
+    // Fetch wire instructions from Endaoment API
+    const wireInstructionsResponse = await fetch(wireInstructionsUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        //   This does not need any authentication since this is public information
       },
+    });
+
+    if (!wireInstructionsResponse.ok) {
+      return res.status(wireInstructionsResponse.status).json({ error: 'Failed to fetch wire instructions' });
     }
-  );
 
-  const wireInstructions = await wireInstructionsResponse.json();
-
-  res.status(200);
-  res.json(wireInstructions);
-  res.end();
+    const wireInstructions = await wireInstructionsResponse.json();
+    res.status(200).json(wireInstructions); // Return wire instructions to frontend
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching wire instructions' });
+  }
 }
 
 export async function wireDonation(req: Request, res: Response) {
