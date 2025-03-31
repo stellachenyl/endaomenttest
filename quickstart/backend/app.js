@@ -1,7 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const routes = require('./routes');
+const fetch = require('node-fetch');
+const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
