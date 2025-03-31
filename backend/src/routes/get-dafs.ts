@@ -17,6 +17,9 @@ export async function getDafs(req: Request, res: Response) {
         },
       }
     );
+    if (!usersDafListResponse.ok) {
+      return res.status(usersDafListResponse.status).json({ error: 'Failed to fetch DAFs' });
+    }
     const usersDafList = await usersDafListResponse.json();
 
     res.status(200);
