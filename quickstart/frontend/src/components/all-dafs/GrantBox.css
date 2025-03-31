@@ -1,0 +1,31 @@
+#grant-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+
+  & > div {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+
+    input,
+    textarea {
+      flex: 1;
+    }
+
+    &.org-select {
+      flex-direction: column;
+    }
+  }
+}
+
+.org-select {
+  display: flex;
+  flex-direction: column;
+  max-width: 30svw;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
