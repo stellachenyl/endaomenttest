@@ -34,6 +34,13 @@ export const OrgSearch = () => {
       setIsLoading(false); // Set loading to false after the request is done
     }
   };
+  
+  // Trigger search when user presses Enter or clicks the Search button
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   return (
     <>
