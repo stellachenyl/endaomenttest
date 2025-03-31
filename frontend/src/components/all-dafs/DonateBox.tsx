@@ -67,17 +67,24 @@ export const DonateBox = ({
       <form id="donate-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="amount">Amount in dollars</label>
-          <input type="number" id="amount" name="amount" />
+          <input type="number" id="amount" name="amount" required />
         </div>
-        {wireInstructions && (
-          <p>
-            {'Please make sure to wire the same amount to account #'}
-            <b>{wireInstructions.beneficiary.accountNumber}</b>
-            {' at '}
-            <b>{wireInstructions.receivingBank.name}</b>
-            {' with ABA routing #'}
-            <b>{wireInstructions.receivingBank.abaRoutingNumber}</b>
-          </p>
+
+        {/* Render wire instructions if available */}
+        {wireInstructions ? (
+          <div>
+            <h5>Wire Instructions</h5>
+            <p>
+              {'Please make sure to wire the donation to account number '}
+              <b>{wireInstructions.beneficiary.accountNumber}</b>
+              {' at '}
+              <b>{wireInstructions.receivingBank.name}</b>
+              {' with ABA routing number '}
+              <b>{wireInstructions.receivingBank.abaRoutingNumber}</b>.
+            </p>
+          </div>
+        ) : (
+          <p>Loading wire instructions...</p>
         )}
 
         {isIdle || isError ? (
@@ -91,6 +98,7 @@ export const DonateBox = ({
             {isSuccess && 'Donated!'}
           </span>
         )}
+
         {isSuccess && (
           <>
             <br />
