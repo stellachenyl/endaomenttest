@@ -58,5 +58,5 @@ export const createDaf = async (req: Request, res: Response) => {
 
   console.log('DAF created successfully:', fundData);
   // Return the newly created DAF's data to the frontend
-  res.status(200).json(fundData);
+  return res.status(200).json(newDaf);
 };
