@@ -43,12 +43,13 @@ export const AllDafs = () => {
   const [isShowingDonateBox, setIsShowingDonateBox] = useState(false);
   const [isShowingGrantBox, setIsShowingGrantBox] = useState(false);
   const [wireInstructions, setWireInstructions] = useState(null);
+  const [wireType, setWireType] = useState('domestic');
 
   useEffect(() => {
     if (focusedDaf) {
-      fetchWireInstructions(focusedDaf.id);
+      fetchWireInstructions(focusedDaf.id, wireType);
     }
-  }, [focusedDaf]);
+  }, [focusedDaf, wireType]);
 
   const fetchWireInstructions = async (dafId: string, wireType: string) => {
     try {
@@ -81,6 +82,10 @@ export const AllDafs = () => {
     setIsShowingGrantBox(false);
     setFocusedDaf(undefined);
     setWireInstructions(null);
+  };
+
+  const handleWireTypeChange = (type: string) => {
+    setWireType(type);
   };
 
   return (
