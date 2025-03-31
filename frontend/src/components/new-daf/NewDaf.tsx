@@ -183,19 +183,19 @@ export const NewDaf = () => {
         <main>
           <h1>DAF Created!</h1>
           <p>
-            <strong>Name:</strong> <span id="fund-name">{newDafData.name}</span>
+            <strong>Name:</strong> <span id="fund-name">{newDafData?.name}</span>
           </p>
           <p>
-            <strong>Description:</strong> <span id="fund-description">{newDafData.description}</span>
+            <strong>Description:</strong> <span id="fund-description">{newDafData?.description}</span>
           </p>
           <p>
             <strong>Advisor:</strong>{' '}
             <span id="fund-advisor">
-              {newDafData.advisor.firstName} {newDafData.advisor.lastName}
+              {newDafData?.advisor?.firstName} {newDafData?.advisor?.lastName}
             </span>
           </p>
           <p>
-            <strong>Balance:</strong> <span id="fund-balance">{newDafData.usdcBalance}</span>
+            <strong>Balance:</strong> <span id="fund-balance">{newDafData?.usdcBalance}</span>
           </p>
         </main>
       )}
