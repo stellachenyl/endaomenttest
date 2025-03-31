@@ -3,6 +3,38 @@ import './NewDaf.css';
 import { useMutation } from '@tanstack/react-query';
 import { getEnvOrThrow } from '../../utils/env';
 
+const countryCodeMapping: { [key: string]: string } = {
+  'United States': 'USA',
+  'Canada': 'CAN',
+  'United Kingdom': 'GBR',
+  'Germany': 'DEU',
+  'France': 'FRA',
+  'Australia': 'AUS',
+  'India': 'IND',
+  'Italy': 'ITA',
+  'Spain': 'ESP',
+  'Netherlands': 'NLD',
+  'Belgium': 'BEL',
+  'Japan': 'JPN',
+  'China': 'CHN',
+  'Brazil': 'BRA',
+  'Mexico': 'MEX',
+  'South Korea': 'KOR',
+  'Russia': 'RUS',
+  'Switzerland': 'CHE',
+  'Sweden': 'SWE',
+  'Norway': 'NOR',
+  'Denmark': 'DNK',
+  'Finland': 'FIN',
+  'South Africa': 'ZAF',
+  'New Zealand': 'NZL',
+  'Singapore': 'SGP',
+  'Argentina': 'ARG',
+  'Poland': 'POL',
+  'Austria': 'AUT',
+  'Ireland': 'IRL',
+};
+
 export const NewDaf = () => {
   const [newDafData, setNewDafData] = useState<any>(null);
   const {
