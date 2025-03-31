@@ -1,6 +1,7 @@
-quickstart/backend/node_modules
-quickstart/frontend/node_modules
+/quickstart/backend/node_modules
+/quickstart/frontend/node_modules
 test2.js
 test.txt
-quickstart/backend/.env
-quickstart/frontend/.env
+/quickstart/backend/.env
+/quickstart/frontend/.env
+/quickstart/backend/login-states
