@@ -40,24 +40,19 @@ export async function wireDonation(req: Request, res: Response) {
   const receivingFundId = req.body['fundId'];
 
   if (!amount || !receivingFundId) {
-    res.status(400);
-    res.json({ error: 'Missing amount or fundId' });
-    res.end();
-    return;
+    return res.status(400).json({ error: 'Missing amount or fundId' });
   }
 
   const token = getAccessToken(req);
-
   const idempotencyKey = crypto.randomUUID();
   const pledgedAmountMicroDollars = (BigInt(amount) * 1000000n).toString();
 
-  const donationRequest = await fetch(
-    `${getEndaomentUrls().api}/v1/donation-pledges/wire`,
-    {
+  try {
+    // Send the donation request to Endaoment API
+    const donationRequest = await fetch(`${getEndaomentUrls().api}/v1/donation-pledges/wire`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Pass the user's token in the Authorization header
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
@@ -65,12 +60,12 @@ export async function wireDonation(req: Request, res: Response) {
         receivingFundId,
         idempotencyKey,
       }),
-    }
-  );
+    });
 
-  const donation = await donationRequest.json();
-
-  res.status(200);
-  res.json(donation);
-  res.end();
+    const donation = await donationRequest.json();
+    res.status(200).json(donation); // Return donation response
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while processing the donation' });
+  }
 }
