@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { getEnvOrThrow } from '../../utils/env';
 
 export const NewDaf = () => {
+  const [newDafData, setNewDafData] = useState<any>(null);
   const {
     mutate: createDaf,
     isIdle,
@@ -46,6 +47,10 @@ export const NewDaf = () => {
       );
 
       return response.json();
+    },
+    onSuccess: (data) => {
+      // Save the new DAF data to display it in the frontend
+      setNewDafData(data);
     },
   });
 
