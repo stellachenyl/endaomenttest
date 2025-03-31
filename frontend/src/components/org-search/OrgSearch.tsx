@@ -8,6 +8,33 @@ export const OrgSearch = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state for the request
   const [error, setError] = useState<string | null>(null); // Error handling state
 
+  // Handle search on button click or Enter key press
+  const handleSearch = async () => {
+    setIsLoading(true); // Set loading to true before the API call
+    setError(null); // Reset previous errors
+    try {
+      // Prepare the search URL for Endaoment API
+      const searchUrl = `https://api.endaoment.com/v2/orgs/search?searchTerm=${searchTerm}`;
+
+      // Make the fetch request
+      const response = await fetch(searchUrl);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch organizations');
+      }
+
+      const data = await response.json();
+
+      // Set search results in the state
+      setSearchResults(data);
+    } catch (error) {
+      console.error(error);
+      setError('Error fetching search results'); // Set error message on failure
+    } finally {
+      setIsLoading(false); // Set loading to false after the request is done
+    }
+  };
+
   return (
     <>
       <input
