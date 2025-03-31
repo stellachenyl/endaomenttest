@@ -27,6 +27,8 @@ export const createDaf = async (req: Request, res: Response) => {
     advisor: newFundAdvisor,
   };
 
+  dafsInMemory.push(newDaf);
+
   const fundCreationResponse = await fetch(
     `${getEndaomentUrls().api}/v1/funds`,
     {
