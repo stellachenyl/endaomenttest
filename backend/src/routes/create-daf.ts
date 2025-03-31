@@ -21,6 +21,12 @@ export const createDaf = async (req: Request, res: Response) => {
     return res.status(401).json({ error: 'Missing authorization token' });
   }
 
+  const newDaf = {
+    name: newFundName,
+    description: newFundDescription,
+    advisor: newFundAdvisor,
+  };
+
   const fundCreationResponse = await fetch(
     `${getEndaomentUrls().api}/v1/funds`,
     {
