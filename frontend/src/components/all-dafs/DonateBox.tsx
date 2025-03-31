@@ -25,20 +25,29 @@ export const DonateBox = ({
   const [wireInstructions, setWireInstructions] = useState<WireInstructions | null>(null);
   const [loadingWireInstructions, setLoadingWireInstructions] = useState(true);
   const [errorFetchingWireInstructions, setErrorFetchingWireInstructions] = useState(false);
-  
-  // Use React Query to fetch the wire instructions
-  const { isLoading, isError, data } = useQuery(
-    ['wireInstructions', daf.id], // Query key (unique identifier for this query)
-    () => fetchWireInstructions(daf.id), // Query function to fetch the data
-    {
-      onSuccess: (data) => {
-        setWireInstructions(data); // Set wire instructions after successful fetch
-      },
-      onError: (error) => {
+
+  // Fetch wire instructions when daf.id is available
+  useEffect(() => {
+    if (!daf.id) return;
+
+    const fetchData = async () => {
+      try {
+        setLoadingWireInstructions(true);
+        setErrorFetchingWireInstructions(false);
+
+        const data = await fetchWireInstructions(daf.id);
+        setWireInstructions(data);
+      } catch (error) {
+        setErrorFetchingWireInstructions(true);
         console.error('Error fetching wire instructions', error);
-      },
-    }
-  );
+      } finally {
+        setLoadingWireInstructions(false);
+      }
+    };
+
+    fetchData();
+  }, [daf.id]); // Run the effect when `daf.id` changes
+  
   const {
     mutate: donate,
     isIdle,
