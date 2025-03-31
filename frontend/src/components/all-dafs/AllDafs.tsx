@@ -85,8 +85,12 @@ export const AllDafs = () => {
 
   return (
     <>
-      {isShowingDonateBox && focusedDaf && (
-        <DonateBox daf={focusedDaf} onClose={handleClose} />
+      {isShowingDonateBox && focusedDaf && wireInstructions && (
+        <DonateBox 
+          daf={focusedDaf}
+          wireInstructions={wireInstructions}
+          onClose={handleClose}
+        />
       )}
       {isShowingGrantBox && focusedDaf && (
         <GrantBox daf={focusedDaf} onClose={handleClose} />
