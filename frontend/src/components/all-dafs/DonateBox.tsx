@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import type { Daf, WireInstructions } from '../../utils/endaoment-types';
 import { getEnvOrThrow } from '../../utils/env';
 import type { FormEvent } from 'react';
@@ -7,16 +7,38 @@ import { queryClient } from '../../utils/queryClient';
 
 export const DONATE_BOX_ID = 'donate-box';
 
+// This will handle the fetch of wire instructions from the backend
+const fetchWireInstructions = async (dafId: string) => {
+  const response = await fetch(`${getEnvOrThrow('SAFE_BACKEND_URL')}/get-wire-instructions?fundId=${dafId}`);
+  const data = await response.json();
+  return data;
+};
+
 // Accept wireInstructions as a prop
 export const DonateBox = ({
   daf,
   onClose,
-  wireInstructions,  // Accept wireInstructions as a prop
 }: {
   daf: Daf;
   onClose: () => void;
-  wireInstructions: WireInstructions | null;  // Add the prop type
 }) => {
+  const [wireInstructions, setWireInstructions] = useState<WireInstructions | null>(null);
+  const [loadingWireInstructions, setLoadingWireInstructions] = useState(true);
+  const [errorFetchingWireInstructions, setErrorFetchingWireInstructions] = useState(false);
+  
+  // Use React Query to fetch the wire instructions
+  const { isLoading, isError, data } = useQuery(
+    ['wireInstructions', daf.id], // Query key (unique identifier for this query)
+    () => fetchWireInstructions(daf.id), // Query function to fetch the data
+    {
+      onSuccess: (data) => {
+        setWireInstructions(data); // Set wire instructions after successful fetch
+      },
+      onError: (error) => {
+        console.error('Error fetching wire instructions', error);
+      },
+    }
+  );
   const {
     mutate: donate,
     isIdle,
