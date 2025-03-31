@@ -39,7 +39,7 @@ app.post('/init-login', async (req, res) => {
   
     saveOAuthState({ codeVerifier, codeChallenge, state });
   
-    const redirectUri = 'http://localhost:5454/verify-login';  // Ensure this matches your OAuth redirect URI
+    const redirectUri = 'http://localhost:5454/dev/token';  // Ensure this matches your OAuth redirect URI
     const urlParams = new URLSearchParams({
       response_type: 'code',
       prompt: 'consent',
@@ -84,6 +84,48 @@ app.get('/verify-login', async (req, res) => {
     const tokenData = await tokenResponse.json();
     // Store the token securely
     res.json(tokenData); // Send the token data back to the frontend (optional, you can also store it server-side)
+  });
+
+  app.get('/dev/token', async (req, res) => {
+    const { state, code } = req.query;
+  
+    // Load the stored variables for the state (codeVerifier, etc.)
+    const exportedVariables = getOAuthState(state);
+  
+    // Validate the state parameter to prevent CSRF attacks
+    if (!state || state !== exportedVariables.state) {
+      return res.status(400).json({ error: 'State mismatch' });
+    }
+  
+    // Prepare the form data for the token exchange request
+    const formData = new URLSearchParams();
+    formData.append('grant_type', 'authorization_code');
+    formData.append('code', code); // The authorization code from the URL
+    formData.append('code_verifier', exportedVariables.codeVerifier); // Code verifier from the initial login
+    formData.append('redirect_uri', 'http://localhost:5454/dev/token'); // The same redirect URI used during the OAuth flow
+  
+    // Send the token request to the Endaoment API
+    const tokenResponse = await fetch('https://auth.endaoment.org/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(
+          `${process.env.ENDAOMENT_CLIENT_ID}:${process.env.ENDAOMENT_CLIENT_SECRET}`
+        ).toString('base64')}`,
+      },
+      body: formData,
+    });
+  
+    const tokenData = await tokenResponse.json();
+  
+    if (tokenData.error) {
+      return res.status(400).json({ error: tokenData.error });
+    }
+  
+    // Now that we have the access token, store it securely (in a session or database)
+    // Here, we'll just send it back as a response (in real-world apps, avoid sending tokens in responses)
+  
+    res.json(tokenData);  // Send back the token response, or store it securely in your backend
   });
 
 // Error handling middleware
