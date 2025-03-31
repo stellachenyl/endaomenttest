@@ -3,56 +3,6 @@ import './NewDaf.css';
 import { useMutation } from '@tanstack/react-query';
 import { getEnvOrThrow } from '../../utils/env';
 
-const countryCodeMapping: { [key: string]: string } = {
-  'United States': 'USA',
-  'Canada': 'CAN',
-  'United Kingdom': 'GBR',
-  'Germany': 'DEU',
-  'France': 'FRA',
-  'Australia': 'AUS',
-  'India': 'IND',
-  'Italy': 'ITA',
-  'Spain': 'ESP',
-  'Netherlands': 'NLD',
-  'Belgium': 'BEL',
-  'Japan': 'JPN',
-  'China': 'CHN',
-  'Brazil': 'BRA',
-  'Mexico': 'MEX',
-  'South Korea': 'KOR',
-  'Russia': 'RUS',
-  'Switzerland': 'CHE',
-  'Sweden': 'SWE',
-  'Norway': 'NOR',
-  'Denmark': 'DNK',
-  'Finland': 'FIN',
-  'South Africa': 'ZAF',
-  'New Zealand': 'NZL',
-  'Singapore': 'SGP',
-  'Argentina': 'ARG',
-  'Poland': 'POL',
-  'Austria': 'AUT',
-  'Ireland': 'IRL',
-};
-
-// Function to validate and convert country name to ISO Alpha-3 code
-const convertCountryToCode = (countryName: string): string => {
-  // Check if the country name is in the mapping or if it's a valid Alpha-3 code
-  const countryCode = countryCodeMapping[countryName];
-  if (countryCode) {
-    return countryCode; // If the country is in the list, return its Alpha-3 code
-  }
-  
-  // If it's already a valid ISO Alpha-3 code, return it directly (e.g., "USA", "CAN")
-  const isAlpha3Code = Object.values(countryCodeMapping).includes(countryName);
-  if (isAlpha3Code) {
-    return countryName; // Return the provided ISO Alpha-3 code if it's valid
-  }
-
-  // If country is not found in mapping and is not a valid Alpha-3 code, return a default or an error
-  throw new Error('Invalid or unsupported country name/Alpha-3 code');
-};
-
 export const NewDaf = () => {
   const [newDafData, setNewDafData] = useState<any>(null);
   const {
