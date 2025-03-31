@@ -5,7 +5,6 @@ import { getEndaomentUrls } from '../utils/endaoment-urls';
 let dafsInMemory: any[] = [];
 
 export const createDaf = async (req: Request, res: Response) => {
-  console.log('Received DAF Creation Request:', req.body);
   const newFundName = req.body['name'];
   const newFundDescription = req.body['description'];
   const newFundAdvisor = req.body['fundAdvisor'];
@@ -28,6 +27,7 @@ export const createDaf = async (req: Request, res: Response) => {
   };
 
   dafsInMemory.push(newDaf);
+  console.log('DAF stored in memory:', newDaf);
 
   const fundCreationResponse = await fetch(
     `${getEndaomentUrls().api}/v1/funds`,
