@@ -1,6 +1,6 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { getEnvOrThrow } from '../../utils/env';
-import type { Daf } from '../../utils/endaoment-types';
+import type { Daf, WireInstructions } from '../../utils/endaoment-types';
 import './AllDafs.css';
 import { useReducer, useEffect, useState } from 'react';
 import { DONATE_BOX_ID, DonateBox } from './DonateBox';
@@ -42,7 +42,7 @@ export const AllDafs = () => {
   );
   const [isShowingDonateBox, setIsShowingDonateBox] = useState(false);
   const [isShowingGrantBox, setIsShowingGrantBox] = useState(false);
-  const [wireInstructions, setWireInstructions] = useState(null);
+  const [wireInstructions, setWireInstructions] = useState<WireInstructions | null>(null);
   const [wireType, setWireType] = useState('domestic');
 
   useEffect(() => {
