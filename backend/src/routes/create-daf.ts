@@ -2,6 +2,8 @@ import type { Request, Response } from 'express';
 import { getAccessToken } from '../utils/access-token';
 import { getEndaomentUrls } from '../utils/endaoment-urls';
 
+// This is for testing purpose only.
+// Production code will require a database.
 let dafsInMemory: any[] = [];
 
 export const createDaf = async (req: Request, res: Response) => {
