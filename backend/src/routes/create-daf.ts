@@ -34,7 +34,11 @@ export const createDaf = async (req: Request, res: Response) => {
     }
   );
 
-  res.status(200);
-  res.json(await fundCreationResponse.json());
-  res.end();
+  const fundData = await fundCreationResponse.json();
+  if (!fundCreationResponse.ok) {
+    return res.status(fundCreationResponse.status).json(fundData);
+  }
+
+  // Return the newly created DAF's data to the frontend
+  res.status(200).json(fundData);
 };
