@@ -20,6 +20,12 @@ function generateCodeVerifier() {
     return toUrlSafe(randomBytes.toString('base64'));
 }
 
+async function generateCodeChallenge(codeVerifier) {
+    const hash = crypto.createHash('sha256');
+    hash.update(codeVerifier);
+    return toUrlSafe(hash.digest('base64'));
+  }
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
