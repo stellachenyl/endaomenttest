@@ -39,7 +39,7 @@ app.post('/init-login', async (req, res) => {
   
     saveOAuthState({ codeVerifier, codeChallenge, state });
   
-    const redirectUri = 'http://localhost:5454/dev/token';  // Ensure this matches your OAuth redirect URI
+    const redirectUri = 'http://localhost:5454/verify-login';  // Ensure this matches your OAuth redirect URI
     const urlParams = new URLSearchParams({
       response_type: 'code',
       prompt: 'consent',
