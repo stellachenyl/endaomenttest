@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import type { Daf, WireInstructions } from '../../utils/endaoment-types';
 import { getEnvOrThrow } from '../../utils/env';
+import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { getEndaomentUrls } from '../../utils/endaoment-urls';
 import { queryClient } from '../../utils/queryClient';
@@ -47,7 +48,7 @@ export const DonateBox = ({
 
     fetchData();
   }, [daf.id]); // Run the effect when `daf.id` changes
-  
+
   const {
     mutate: donate,
     isIdle,
