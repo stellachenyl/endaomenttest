@@ -1,4 +1,4 @@
-import { queryOptions, useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import type { Daf, WireInstructions } from '../../utils/endaoment-types';
 import { getEnvOrThrow } from '../../utils/env';
 import type { FormEvent } from 'react';
@@ -7,27 +7,16 @@ import { queryClient } from '../../utils/queryClient';
 
 export const DONATE_BOX_ID = 'donate-box';
 
-const getWireInstructionsQueryOptions = queryOptions({
-  queryKey: ['Wire Instructions'],
-  queryFn: async (): Promise<WireInstructions> => {
-    const response = await fetch(
-      `${getEnvOrThrow('SAFE_BACKEND_URL')}/wire-donation`,
-      {
-        credentials: 'include',
-      }
-    );
-    return response.json();
-  },
-});
-
+// Accept wireInstructions as a prop
 export const DonateBox = ({
   daf,
   onClose,
+  wireInstructions,  // Accept wireInstructions as a prop
 }: {
   daf: Daf;
   onClose: () => void;
+  wireInstructions: WireInstructions | null;  // Add the prop type
 }) => {
-  const { data: wireInstructions } = useQuery(getWireInstructionsQueryOptions);
   const {
     mutate: donate,
     isIdle,
@@ -80,14 +69,16 @@ export const DonateBox = ({
           <label htmlFor="amount">Amount in dollars</label>
           <input type="number" id="amount" name="amount" />
         </div>
-        <p>
-          {'Please make sure to wire the same amount to account #'}
-          <b>{wireInstructions?.beneficiary.accountNumber}</b>
-          {' at '}
-          <b>{wireInstructions?.receivingBank.name}</b>
-          {' with ABA routing #'}
-          <b>{wireInstructions?.receivingBank.abaRoutingNumber}</b>
-        </p>
+        {wireInstructions && (
+          <p>
+            {'Please make sure to wire the same amount to account #'}
+            <b>{wireInstructions.beneficiary.accountNumber}</b>
+            {' at '}
+            <b>{wireInstructions.receivingBank.name}</b>
+            {' with ABA routing #'}
+            <b>{wireInstructions.receivingBank.abaRoutingNumber}</b>
+          </p>
+        )}
 
         {isIdle || isError ? (
           <button type="submit">
