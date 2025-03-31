@@ -46,7 +46,9 @@ export const NewDaf = () => {
         }
       );
 
-      return response.json();
+      const responseData = await response.json();
+      console.log('Response from backend:', responseData);
+      return responseData;
     },
     onSuccess: (data) => {
       // Save the new DAF data to display it in the frontend
