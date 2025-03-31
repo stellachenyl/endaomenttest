@@ -95,6 +95,7 @@ app.get('/verify-login', async (req, res) => {
     });
   
     const tokenData = await tokenResponse.json();
+    console.log('Access Token Response:', tokenData);
     // Store the token securely
     res.json(tokenData); // Send the token data back to the frontend (optional, you can also store it server-side)
   });
