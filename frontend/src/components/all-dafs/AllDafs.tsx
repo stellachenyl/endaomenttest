@@ -50,6 +50,16 @@ export const AllDafs = () => {
     }
   }, [focusedDaf]);
 
+  const fetchWireInstructions = async (dafId: string) => {
+    try {
+      const response = await fetch(`/get-wire-instructions?fundId=${dafId}`);
+      const data = await response.json();
+      setWireInstructions(data);
+    } catch (error) {
+      console.error('Error fetching wire instructions:', error);
+    }
+  };
+
   const handleDonate = (id: string) => {
     if (!focusedDaf || focusedDaf.id !== id || !isShowingDonateBox) {
       setFocusedDaf(id);
