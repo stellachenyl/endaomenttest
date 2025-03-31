@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login with Endaoment</title>
+</head>
+<body>
+  <button id="loginBtn">Login with Endaoment</button>
+
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      try {
+        const response = await fetch('http://localhost:5454/init-login', {
+          method: 'POST',
+          credentials: 'include'
+        });
+        
+        if (!response.ok) throw new Error('Login failed');
+        
+        const { url } = await response.json();
+        window.location.href = url;
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('Login failed. Check console for details.');
+      }
+    });
+  </script>
+</body>
+</html>
